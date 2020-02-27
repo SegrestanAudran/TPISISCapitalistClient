@@ -6,7 +6,158 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstraptheme.min.css" >
+
+  <style>
+    /* * {
+        border: 1px solid black;
+    } */
+
+    .round {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 1px solid yellowgreen;
+    }
+
+    .lesdeux {
+        position: relative;
+    }
+
+    .lesecond {
+        position: absolute;
+        /* on met cet élément à 10 pixels du bas de son conteneur */
+        /* du coup il se superpose à l’autre qui est dans le flux normal */
+        bottom: -10px;
+    }
+
+    .logo {
+    width : 100px;
+    height: 100px;
+    border-radius: 50%;
+   }
+</style>
 </head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row produit">
+            <div class="col-md-1 logo"><img class="logo" src="barbapapa.gif"/></div>
+            <div class="col-md-2 quatité">10</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"> </div>
+            <div class="col-md-5"> </div>
+            <div class="col-md-1"> </div>
+            <div class="col-md-5"> </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">Entete1</div>
+            <div class="col-md-2">Entete2</div>
+            <div class="col-md-2">Entete3</div>
+            <div class="col-md-2">Entete1</div>
+            <div class="col-md-2">Entete2</div>
+            <div class="col-md-2">Entete3</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">Partie Gauche</div>
+            <div class="col-md-5">Partie droite</div>
+            <div class="col-md-1">Partie Gauche</div>
+            <div class="col-md-5">Partie droite</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">Entete1</div>
+            <div class="col-md-2">Entete2</div>
+            <div class="col-md-2">Entete3</div>
+            <div class="col-md-2">Entete1</div>
+            <div class="col-md-2">Entete2</div>
+            <div class="col-md-2">Entete3</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">Partie Gauche</div>
+            <div class="col-md-5">Partie droite</div>
+            <div class="col-md-1">Partie Gauche</div>
+            <div class="col-md-5">Partie droite</div>
+        </div>
+    </div>
+
+    <div class="lesdeux">
+        <div class="lepremier">Contenu 1</div>
+        <div class="lesecond">Contenu 2</div>
+       </div>
+
+</body>
+
+<head>
+    <style>
+        .template {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- emplacement pour afficher les items -->
+    <div id="liste"></div>
+
+    <!-- template de chaque item -->
+    <div class="template">
+        <div class="nom"></div>
+        <div class="image"></div>
+    </div>
+    <script>
+        var items = [{ nom: "poire", image: "poire.jpg" },
+        { nom: "pomme", image: "pomme.jpg" },
+        { nom: "cerise", image: "cerise.jpg" }];
+        $.each(items, function (index, item) {
+            // on va chercher une copie du template
+            var elem = $(".template").clone();
+            // on enlève la classe .template de la copie
+            elem.removeClass("template");
+            // on ajoute un attribut unique
+            elem.attr("id", "p" + (index + 1));
+            // on positionne l'image
+            elem.find(".image").html(
+                '<img src="' + serveurUrl + item.image + '"/>');
+            // on positionne le nom
+            elem.find(".nom").html(item.name);
+            // on ajoute le résultat là où il faut
+            $("#liste").append(elem);
+        });
+    </script>
+</body>
+   
+
+</html>
+
+<script>
+    var serveurUrl = "http://localhost:8080/AdventureISIS/";
+    var currentWorld;
+    $(document).ready(function () {
+        $.getJSON(serveurUrl + "webresources/generic/world", function (world) {
+            currentWorld = world;
+            // remplir le layout avec les informations globales
+            // (nom du monde, argent total....)
+            // puis boucler sur chaque produit
+            $.each(world.products.product, function (index, product) {
+                // remplir le layout avec les infos de chaque produit
+            });
+        });
+    });
+</script> 
+
+<script>
+    $(".logo").click(function (event) {
+ var id = $(this).parents(".product").attr("id").substr(1) - 1;
+ var product = currentworld.products.product[id];
+});
+
+</script>
 <body>
   <app-root></app-root>
 </body>
