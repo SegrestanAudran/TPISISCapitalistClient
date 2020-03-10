@@ -6,18 +6,18 @@ import { AppComponent } from './app.component';
 import { ProductComponent } from './product/product.component';
 import { RestserviceService } from './restservice.service';
 import { HttpClient } from '@angular/common/http';
+import { BigvaluePipe } from './bigvalue.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
-    RestserviceService
+    BigvaluePipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    HttpClient
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

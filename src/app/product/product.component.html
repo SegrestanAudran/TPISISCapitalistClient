@@ -1,1 +1,15 @@
-<p>product works!</p>
+<div class="col-md-4"><img class="logo btn" src="../assets/barbapapa.gif" (click)="production()"/> <img [attr.src]="product.logo" />
+    <span>Revenu :<span id="productRevenue" [innerHTML]="product.revenu | bigvalue"> {{product.revenu}} </span> </span>
+    <span>Quantite : <span id="productQuantite" [innerHTML]="product.quantite | bigvalue"> {{product.quantite}} </span> </span>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" #bar></div>
+    </div>
+    <div class="row">
+      <div class="col-5 col-sm-6">
+        <button type="button" class="btn btn-primary">Cout :<span id="productCout" [innerHTML]="product.cout | bigvalue"> {{product.cout}} </span></button>
+      </div>
+      <div class="col-5 col-sm-6">
+        <span>Temps :<span id="productTemps" [innerHTML]="product.timeleft | bigvalue"> {{product.timeleft}} </span></span>
+      </div>
+    </div>
+  </div>

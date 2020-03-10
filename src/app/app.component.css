@@ -1,0 +1,41 @@
+/** {
+    border: 1px solid black;
+}*/
+
+.round {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid yellowgreen;
+}
+
+.lesdeux {
+    position: relative;
+}
+
+.lesecond {
+    position: absolute;
+    /* on met cet élément à 10 pixels du bas de son conteneur */
+    /* du coup il se superpose à l’autre qui est dans le flux normal */
+    bottom: -10px;
+}
+
+.title {
+
+}
+
+.logo {
+width : 100px;
+height: 100px;
+border-radius: 50%;
+}
+
+.logotitle {
+    width : 200px;
+    height : 200px;
+    border-radius: 50%;
+}
+
+.template {
+    display: none;
+}
