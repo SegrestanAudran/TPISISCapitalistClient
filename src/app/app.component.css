@@ -2,6 +2,10 @@
     border: 1px solid black;
 }*/
 
+body {
+    background-image: radial-gradient(White, Pink);
+}
+
 .round {
     width: 100px;
     height: 100px;

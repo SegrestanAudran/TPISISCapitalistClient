@@ -18,13 +18,14 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2"><img class="img-fluid logotitle" alt="Responsive image" src="../assets/barbafamille.jpg" /></div>
-      <div class="col-md-4 title h1">Le monde des Barbapapa <span id="worldname"> {{world.name}} </span>
+      <div class="col-md-2"><img class="img-fluid logotitle" alt="Responsive image" [attr.src]="'http://localhost:8080/'+world.logo" /></div>
+      <div class="col-md-10 title h1"><span id="worldname"> {{world.name}} </span>
         <div class ='row'>
           <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue"> {{world.money}} </span></div>
           <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"> {{world.totalangels}} </span></div>
         </div>
       </div>
+      <div class="col-md-4"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy  </span><span> {{qtmulti}}</span></button></div>
     </div>
     <div class="row">
     </div>
@@ -32,38 +33,38 @@
     </div>
     <div class="row">
       <div class="col-md-2"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[1]" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
     </div>
-
+    <!--
     <div class="row">
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary">Améliorations</button></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]"  [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
     </div>
     <div class="row">
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary">Managers</button></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]"  [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
     </div>
     <div class="row">
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary">Anges</button></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-1"></div>
     </div>
     <div class="row">
       <div class="col-md-4"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col"></app-product>
+      <app-product [prod]="world.products.product[0]"  [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
       <div class="col-md-4"></div>
-    </div>
+    </div>-->
   </div>
 </body>
 
