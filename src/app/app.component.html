@@ -25,47 +25,58 @@
           <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"> {{world.totalangels}} </span></div>
         </div>
       </div>
-      <div class="col-md-4"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy  </span><span> {{qtmulti}}</span></button></div>
-    </div>
-    <div class="row">
-    </div>
-    <div class="row">
+      <div class="col-md-4"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
     </div>
     <div class="row">
       <div class="col-md-2"></div>
-      <app-product [prod]="world.products.product[0]" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[1]" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-1"></div>
-    </div>
-    <!--
-    <div class="row">
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary">Améliorations</button></div>
-      <app-product [prod]="world.products.product[0]"  [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-1"></div>
+      <!--<div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div>-->
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="managersModal.show()">Managers</button></div>
+      <!--<div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="ameliorationsModal.show()">Améliorations</button></div>
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="angesModal.show()">Anges</button></div>-->
+      
     </div>
     <div class="row">
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary">Managers</button></div>
-      <app-product [prod]="world.products.product[0]"  [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
+    </div>
+    <div *ngFor="let p of world.products.product; let isEven = even;">
+      <div *ngIf="isEven">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <app-product [prod]="world.products.product[p.id-1]" [mon]="world.money" [qtmulti]="qtmulti" class="product col" (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"></app-product>
       <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
+      <app-product [prod]="world.products.product[p.id]" [mon]="world.money" [qtmulti]="qtmulti" class="product col" (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"></app-product>
       <div class="col-md-1"></div>
     </div>
-    <div class="row">
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary">Anges</button></div>
-      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[0]" [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-1"></div>
-    </div>
-    <div class="row">
-      <div class="col-md-4"></div>
-      <app-product [prod]="world.products.product[0]"  [qtmulti]="qtmulti" [mon]="world.money" class="product col" (notifyProduction)="onProductionDone($event)"></app-product>
-      <div class="col-md-4"></div>
-    </div>-->
   </div>
+  </div>
+    <!--<toaster-container></toaster-container>-->
+  </div>
+  <app-modal #managersModal>
+    <div class="app-modal-header">
+      <h4 class="modal-title">Managers</h4>
+    </div>
+    <div class="app-modal-body">
+      <div *ngFor="let manager of world.managers.pallier">
+        <div *ngIf="!manager.unlocked">
+          <div class="row">
+            <div class="col-md-2">
+                <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[manager.idcible-1].logo"></span>
+            </div>
+            <div class="col-md-3">
+                <span>{{manager.name}}</span>
+                <span>{{manager.seuil}}</span>
+            </div>
+            <div class="col-md-3">
+                <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatManager(manager)" [disabled]="world.money < manager.seuil">Hire!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-default" (click)="managersModal.hide()">Close</button>
+    </div>
+  </app-modal>
 </body>
 
 

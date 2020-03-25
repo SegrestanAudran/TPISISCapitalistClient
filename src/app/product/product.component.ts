@@ -20,15 +20,20 @@ export class ProductComponent implements OnInit {
   progressDone : boolean;
   vitesse : number;
   idBar : string;
-  cost : number;
+  initRevenu : number = 0;
 
 
 
   product: Product;
   @Input()
-  set prod(coucou: Product) {
+  set prod(value: Product) {
     //console.log(value.vitesse)
-    this.product = coucou;
+    
+    this.product = value;
+    this.product.timeleft = 0;
+    if(this.initRevenu == 0){
+      this.initRevenu = this.product.revenu;
+    }
     /*this.idBar = "bar"+value.id;*/
 }
   
@@ -39,15 +44,28 @@ export class ProductComponent implements OnInit {
     this.money = value;
   }
 
-  _qtmulti: string;
+  _qtmulti: number;
   @Input()
   set qtmulti(value: string) {
-    this._qtmulti = value;
-    if (this._qtmulti == "max" && this.product) this.calcMaxCanBuy();
+    switch(value){
+      case "1":
+        this._qtmulti = 1;
+        break;
+      case "10":
+        this._qtmulti = 10;
+        break;
+      case "100":
+        this._qtmulti = 100;
+        break;
+      case "max" :
+        this._qtmulti = 1000;
+        break;
+    }
+    if (this._qtmulti == 1000 && this.product) this._qtmulti = this.calcMaxCanBuy();
  }
 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
-
+  @Output() notifyMoney: EventEmitter<number> = new EventEmitter<number>();
  
 
 
@@ -58,7 +76,7 @@ export class ProductComponent implements OnInit {
   ngAfterViewInit(){
 
     setTimeout(() => {
-      console.log("Coucou, ça marche l'initialigsation ?");
+      console.log("Coucou, ça marche l'initialisation ?");
     this.progressbar = new ProgressBar.Line(this.progressBarItem.nativeElement, {
       strokeWidth: 4,
       easing: 'easeInOut',
@@ -79,7 +97,7 @@ export class ProductComponent implements OnInit {
 
   production() {
     console.log("coucou ça marche ?")
-    if (this.product.quantite >= 0 && this.product.timeleft == 0) {
+    if (this.product.quantite >= 1 && this.product.timeleft == 0) {
       console.log(this.product.vitesse)
       //let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
 
@@ -103,18 +121,32 @@ export class ProductComponent implements OnInit {
         this.notifyProduction.emit(this.product);
       }
     }
+    if(this.product.managerUnlocked){
+      this.production();
+    }
   }
  
 
  
  calcMaxCanBuy(): number {
-    this.cost = this.product.cout;
-    let maxCanBuy = 0;
-    while(this.cost <= this.money){
-      this.cost = this.cost + this.product.cout * this.product.croissance **(maxCanBuy+1);
+    let cost: number= this.product.cout;
+    let maxCanBuy: number = 0;
+    while(cost <= this.money){
       maxCanBuy+=1;
+      cost = cost + this.product.cout * this.product.croissance **(maxCanBuy);
       }
     return maxCanBuy;
     }
+  
+  achatProduit(){
+    let cost : number;
+    if(this._qtmulti <= this.calcMaxCanBuy()){
+      cost = this.product.cout * this._qtmulti;
+      this.product.cout = this.product.cout * this.product.croissance**this._qtmulti;
+      this.product.quantite += this._qtmulti; 
+      this.product.revenu = this.initRevenu * this.product.quantite;
+      this.notifyMoney.emit(cost);
+    }
+  }
 }
 

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RestserviceService } from './restservice.service';
 import { World, Product, Pallier } from '../world';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @Component({
@@ -12,7 +13,7 @@ export class AppComponent {
   title = 'TPISISCapitalistClient';
   world: World = new World();
   server: string;
-  qtmulti : string;
+  qtmulti : string = "1";
   
   constructor(private service: RestserviceService) {
     this.server = service.getServer();
@@ -26,22 +27,33 @@ export class AppComponent {
     this.world.score = this.world.score + p.revenu;
   }
 
+  onAchatDone( argentDepense: number){
+    this.world.money = this.world.money - argentDepense;
+  }
+
   commutateur(){
     switch(this.qtmulti){
-      case "x1":
-        this.qtmulti = "x10";
+      case "1":
+        this.qtmulti = "10";
         break;
-      case "x10":
-        this.qtmulti = "x100";
+      case "10":
+        this.qtmulti = "100";
         break;
-      case "x100":
+      case "100":
         this.qtmulti = "max";
         break;
       case "max" :
-        this.qtmulti = "x1";
+        this.qtmulti = "1";
         break;
       default:
-        this.qtmulti = "x1";
+        this.qtmulti = "1";
+    }
+  }
+  achatManager(manager){
+    if(this.world.money >= manager.seuil){
+      this.world.money -= manager.seuil;
+      manager.unlocked = true;
+      this.world.products.product[manager.idcible-1].managerUnlocked = true;
     }
   }
 }

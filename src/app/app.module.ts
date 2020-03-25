@@ -7,18 +7,21 @@ import { ProductComponent } from './product/product.component';
 import { RestserviceService } from './restservice.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BigvaluePipe } from './bigvalue.pipe';
-
+import { ModalComponent } from './modal/modal.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
-    BigvaluePipe
+    BigvaluePipe,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule
   ],
   providers: [RestserviceService],
   bootstrap: [AppComponent]
