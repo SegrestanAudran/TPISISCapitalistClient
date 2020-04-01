@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { BigvaluePipe } from './bigvalue.pipe';
 import { ModalComponent } from './modal/modal.component';
 import { ToastrModule } from 'ngx-toastr';
+// import { NotificationService } from './notification.service';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ToastrModule
+    ToastrModule,
+    FormsModule
   ],
   providers: [RestserviceService],
   bootstrap: [AppComponent]

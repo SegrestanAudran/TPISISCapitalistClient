@@ -146,6 +146,7 @@ export class ProductComponent implements OnInit {
       this.product.quantite += this._qtmulti; 
       this.product.revenu = this.initRevenu * this.product.quantite;
       this.notifyMoney.emit(cost);
+      
     }
   }
 }

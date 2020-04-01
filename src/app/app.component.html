@@ -19,21 +19,25 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2"><img class="img-fluid logotitle" alt="Responsive image" [attr.src]="'http://localhost:8080/'+world.logo" /></div>
-      <div class="col-md-10 title h1"><span id="worldname"> {{world.name}} </span>
+      <div class="col-md-5 title h1"><span id="worldname"> {{world.name}} </span>
         <div class ='row'>
           <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue"> {{world.money}} </span></div>
           <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"> {{world.totalangels}} </span></div>
         </div>
       </div>
-      <div class="col-md-4"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
+      <div class="col-md-3"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
+      <div class="col-md-2">
+          <span class="row">Pseudo : </span>
+          <input type="text" [(ngModel)]="username" (change)="onUsernameChanged()" />
+      </div>
     </div>
     <div class="row">
       <div class="col-md-2"></div>
-      <!--<div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div>-->
+      <!-- <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div> -->
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="managersModal.show()">Managers</button></div>
-      <!--<div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="ameliorationsModal.show()">Améliorations</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="angesModal.show()">Anges</button></div>-->
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="angesModal.show()">Anges</button></div>
       
     </div>
     <div class="row">
@@ -49,7 +53,7 @@
     </div>
   </div>
   </div>
-    <!--<toaster-container></toaster-container>-->
+  
   </div>
   <app-modal #managersModal>
     <div class="app-modal-header">
@@ -60,10 +64,11 @@
         <div *ngIf="!manager.unlocked">
           <div class="row">
             <div class="col-md-2">
-                <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[manager.idcible-1].logo"></span>
+                <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+manager.logo"></span>
             </div>
             <div class="col-md-3">
                 <span>{{manager.name}}</span>
+                <span></span>
                 <span>{{manager.seuil}}</span>
             </div>
             <div class="col-md-3">
@@ -77,7 +82,105 @@
       <button type="button" class="btn btn-default" (click)="managersModal.hide()">Close</button>
     </div>
   </app-modal>
+  <!--<app-modal #unlocksModal>
+    <div class="app-modal-header">
+      <h4 class="modal-title">Unlocks</h4>
+    </div>
+    <div class="app-modal-body">
+      <div *ngFor="let unlock of world.allunlocks">
+        <div *ngIf="!unlock.unlocked">
+          <div class="row">
+            <div class="col-md-4">
+                <!-- <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[manager.idcible-1].logo"></span>
+            </div>
+            <div class="col-md-8">
+                <span>{{unlock.name}}</span>
+                <span></span>
+                <span>{{unlock.seuil}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-default" (click)="unlocksModal.hide()">Close</button>
+    </div>
+  </app-modal> -->
+
+<app-modal #investisseursModal>
+  <div class="app-modal-header">
+    <h4 class="modal-title">Angels</h4>
+  </div>
+  <div class="app-modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <span>Total Anges:&nbsp;</span><span [innerHTML]="world.totalangels | bigvalue"></span><br/>
+        <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>      
+      </div>
+      <div class="col-md-3">
+        <button style="height: 100px; width: 100px;" class="btn btn-primary" >Claim and restart !</button>
+      </div>
+    </div>
+  </div>
+  <div class="app-modal-footer">
+    <button type="button" class="btn btn-default" (click)="investisseursModal.hide()">Close</button>
+  </div>
+</app-modal>
+<app-modal #ameliorationsModal>
+  <div class="app-modal-header">
+    <h4 class="modal-title">Upgrades !</h4>
+  </div>
+  <div class="app-modal-body">
+    <div *ngFor="let upgrade of world.upgrades.pallier">
+      <div *ngIf="!upgrade.unlocked">
+        <div class="row">
+          <div class="col-md-2">
+              <!-- <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[upgrade.idcible-1].logo"></span>-->
+          </div>
+          <div class="col-md-3">
+            <span>{{upgrade.name}}</span>
+            <span>{{upgrade.typeratio}}</span>
+            <span>{{upgrade.seuil}}</span>
+          </div>
+          <div class="col-md-3">
+              <button style="height: 100px; width: 100px;" class="btn btn-primary" 
+              (click)="achatUpgrade(upgrade)" [disabled]="world.money < upgrade.seuil"> Buy !
+              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="app-modal-footer">
+    <button type="button" class="btn btn-default" (click)="ameliorationsModal.hide()">Close</button>
+  </div>
+</app-modal>
+<app-modal #angesModal>
+  <div class="app-modal-header">
+    <h4 class="modal-title">Managers</h4>
+  </div>
+  <div class="app-modal-body">
+    <div *ngFor="let angel of world.angelupgrades.pallier">
+      <div *ngIf="!angel.unlocked">
+        <div class="row">
+          <div class="col-md-4">
+              <!-- <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[angel.idcible-1].logo"></span> -->
+          </div>
+          <div class="col-md-5">
+            <span>{{angel.name}}</span>
+            <span>{{angel.typeratio}}</span>
+            <span>{{angel.seuil}}</span>
+          </div>
+          <div class="col-md-3">
+              <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatAnge(angel)" [disabled]="world.money < angel.seuil">Buy !</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="app-modal-footer">
+    <button type="button" class="btn btn-default" (click)="angesModal.hide()">Close</button>
+  </div>
+</app-modal>
 </body>
-
-
 </html>
