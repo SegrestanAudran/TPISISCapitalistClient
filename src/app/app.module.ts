@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BigvaluePipe } from './bigvalue.pipe';
 import { ModalComponent } from './modal/modal.component';
 import { ToastrModule } from 'ngx-toastr';
-// import { NotificationService } from './notification.service';
+import { NotificationService } from './notification.service';
 import { FormsModule } from '@angular/forms';
 
 
@@ -24,10 +24,10 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ToastrModule,
+    ToastrModule.forRoot(),
     FormsModule
   ],
-  providers: [RestserviceService],
+  providers: [RestserviceService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

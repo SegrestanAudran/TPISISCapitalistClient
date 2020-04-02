@@ -39,7 +39,7 @@ export class RestserviceService {
 
   getWorld(): Promise<World> {
     return this.http.get(this.server + "generic/world", {
-      headers: this.setHeaders(this.user)
+      headers: this.setHeaders(this.getUser())
     })
       .toPromise().then(response => response)
       .catch(this.handleError);
@@ -51,7 +51,7 @@ export class RestserviceService {
     return headers;
   }
 
-  putManager(manager: Pallier): Promise<Response> {
+  public putManager(manager: Pallier): Promise<Response> {
     return this.http.put(this.server + "generic/manager", manager, {
       headers: { "X-user": this.getUser() }
     })
@@ -59,7 +59,7 @@ export class RestserviceService {
       .catch(this.handleError);
   }
 
-  putProduit(product: Product): Promise<Response> {
+  public putProduct(product: Product): Promise<Response> {
     return this.http.put(this.server + "generic/product", product, {
       headers: { "X-user": this.getUser() }
     })
@@ -68,7 +68,6 @@ export class RestserviceService {
   };
 
   public putUpgrade(upgrade: Pallier): Promise<Response> {
-    // console.log(upgrade);
      return this.http
        .put(this.server + "generic/upgrade", upgrade, {
          headers: { "X-user": this.getUser() }
@@ -79,7 +78,6 @@ export class RestserviceService {
    }
  
    public saveWorld(world: World): Promise<Response> {
-     // console.log(world);
       return this.http
         .put(this.server + "generic/world", world, {
           headers: { "X-user": this.getUser() }

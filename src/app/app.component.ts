@@ -16,13 +16,20 @@ export class AppComponent {
   qtmulti: string = "1";
   username: string = '';
 
-  constructor(private service: RestserviceService) {
-    this.createUsername();
+  constructor(private service: RestserviceService, private notifyService: NotificationService) {
     this.server = service.getServer();
+    this.createUsername();
+
     service.getWorld().then(world => {
       this.world = world;
     });
-    console.log(this.username);
+    setTimeout(()=>{console.log(this.world.money);}, 100)
+  }
+
+  ngOnInit(): void{
+    setInterval(()=>{
+      this.service.saveWorld(this.world);
+    },1000);
   }
 
   onUsernameChanged() {
@@ -41,7 +48,7 @@ export class AppComponent {
 
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
-    this.world.score = this.world.score + p.revenu;
+    //this.world.score = this.world.score + p.revenu;
   }
 
   onAchatDone(argentDepense: number) {
@@ -71,11 +78,11 @@ export class AppComponent {
       this.world.money -= manager.seuil;
       manager.unlocked = true;
       this.world.products.product[manager.idcible - 1].managerUnlocked = true;
-      // this.notifyService.showSuccess("Achat de " + manager.name + " effectué", "Manager")
+      this.notifyService.showSuccess("Achat de " + manager.name + " effectué", "Manager")
       this.service.putManager(manager);
     }
   }
-  achatUpgrade(upgrade) {
+   achatUpgrade(upgrade) {
     if (this.world.money >= upgrade.seuil) {
       this.world.money -= upgrade.seuil;
       upgrade.unlocked = true;
@@ -101,7 +108,7 @@ export class AppComponent {
             this.world.products.product[upgrade.idcible - 1].vitesse = this.world.products.product[upgrade.idcible - 1].revenu * upgrade.ratio;
             break;
         }
-        // this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour " + this.world.products.product[upgrade.idcible-1].name, "Upgrade"); 
+        this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour " + this.world.products.product[upgrade.idcible-1].name, "Upgrade"); 
       }
     }
   }
@@ -119,10 +126,10 @@ export class AppComponent {
             this.world.products.product.forEach(p => {
               p.vitesse = p.vitesse / angel.ratio;
             });
-            // this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour tous les produits", "Upgrade Angels");
+            this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour tous les produits", "Upgrade Angels");
           } else {
             this.world.products.product[angel.idcible - 1].vitesse = this.world.products.product[angel.idcible - 1].vitesse / angel.ratio;
-            // this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour " + this.world.products.product[angel.idcible-1].name, "Upgrade Angels")
+            this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour " + this.world.products.product[angel.idcible-1].name, "Upgrade Angels")
 
           }
           break;
@@ -131,16 +138,16 @@ export class AppComponent {
             this.world.products.product.forEach(p => {
               p.revenu = p.revenu * angel.ratio;
             });
-            // this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour tous les produits", "Upgrade Angels");
+            this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour tous les produits", "Upgrade Angels");
           } else {
             this.world.products.product[angel.idcible - 1].revenu = this.world.products.product[angel.idcible - 1].revenu / angel.ratio;
-            // this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour " + this.world.products.product[angel.idcible-1].name, "Upgrade Angels")
+            this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour " + this.world.products.product[angel.idcible-1].name, "Upgrade Angels")
 
           }
           break;
       }
     }
 
-  }
+  } 
 
 }

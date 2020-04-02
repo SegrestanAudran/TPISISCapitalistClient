@@ -21,8 +21,8 @@
       <div class="col-md-2"><img class="img-fluid logotitle" alt="Responsive image" [attr.src]="'http://localhost:8080/'+world.logo" /></div>
       <div class="col-md-5 title h1"><span id="worldname"> {{world.name}} </span>
         <div class ='row'>
-          <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue"> {{world.money}} </span></div>
-          <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"> {{world.totalangels}} </span></div>
+          <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue">{{world.money}}</span></div>
+          <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"></span></div>
         </div>
       </div>
       <div class="col-md-3"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
@@ -64,11 +64,12 @@
         <div *ngIf="!manager.unlocked">
           <div class="row">
             <div class="col-md-2">
-                <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+manager.logo"></span>
+                <span><img class="logo" [attr.src]="'http://localhost:8080/'+manager.logo"></span>
             </div>
             <div class="col-md-3">
                 <span>{{manager.name}}</span>
-                <span></span>
+            </div>
+            <div class="col-md-3">
                 <span>{{manager.seuil}}</span>
             </div>
             <div class="col-md-3">
@@ -135,7 +136,7 @@
       <div *ngIf="!upgrade.unlocked">
         <div class="row">
           <div class="col-md-2">
-              <!-- <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[upgrade.idcible-1].logo"></span>-->
+              <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+upgrade.logo"></span>
           </div>
           <div class="col-md-3">
             <span>{{upgrade.name}}</span>
@@ -157,14 +158,14 @@
 </app-modal>
 <app-modal #angesModal>
   <div class="app-modal-header">
-    <h4 class="modal-title">Managers</h4>
+    <h4 class="modal-title">Améliorations Anges</h4>
   </div>
   <div class="app-modal-body">
     <div *ngFor="let angel of world.angelupgrades.pallier">
       <div *ngIf="!angel.unlocked">
         <div class="row">
           <div class="col-md-4">
-              <!-- <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[angel.idcible-1].logo"></span> -->
+              <span><img class="logo" [attr.src]="'http://localhost:8080/'+angel.logo"></span> 
           </div>
           <div class="col-md-5">
             <span>{{angel.name}}</span>
