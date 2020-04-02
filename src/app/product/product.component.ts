@@ -2,7 +2,7 @@ declare var require;
 const ProgressBar = require("progressbar.js");
 import { RestserviceService } from '../restservice.service';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
-import { Product, World } from 'src/world';
+import { Product, World, Pallier } from 'src/world';
 import { NotificationService } from '../notification.service';
 
 @Component({
@@ -23,9 +23,9 @@ export class ProductComponent implements OnInit {
   initRevenu: number = 0;
   progress: any;
   run: boolean;
-  world : World;
+  world: World;
 
-  constructor(private service: RestserviceService, private notifyService: NotificationService) { 
+  constructor(private service: RestserviceService, private notifyService: NotificationService) {
     service.getWorld().then(world => {
       this.world = world;
     });
@@ -40,20 +40,20 @@ export class ProductComponent implements OnInit {
       this.initRevenu = this.product.revenu;
     }
     console.log(this.product.timeleft)
-    if(this.product.timeleft < 0){
+    if (this.product.timeleft < 0) {
       this.product.timeleft = 0;
     }
-    if(this.product.timeleft > 10**12){
-      this.product.timeleft =0;
+    if (this.product.timeleft > 10 ** 12) {
+      this.product.timeleft = 0;
       this.run = false;
     }
-    setTimeout(()=>{
-    if (this.product.managerUnlocked && this.product.timeleft > 0) {
-      this.run = true;
-      this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-      this.progressbar.animate(1, { duration: this.progress });
-    }
-  },100)
+    setTimeout(() => {
+      if (this.product.managerUnlocked && this.product.timeleft > 0) {
+        this.run = true;
+        this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+        this.progressbar.animate(1, { duration: this.progress });
+      }
+    }, 100)
   }
 
 
@@ -117,9 +117,10 @@ export class ProductComponent implements OnInit {
   production() {
     console.log("coucou ça marche ?")
     if (this.product.quantite >= 1 && this.run == false) {
-      this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-
-      this.progressbar.animate(1, { duration: this.progress });
+      //this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      
+      this.service.putProduct(this.product);
+      this.progressbar.animate(1, {duration : this.product.vitesse});
       this.product.timeleft = this.product.vitesse;
       this.lastupdate = Date.now();
       this.run = true;
@@ -128,6 +129,23 @@ export class ProductComponent implements OnInit {
   }
   calcScore() {
     if (this.run) {
+      let lastunlock: any;
+      if (lastunlock == null) {
+        this.product.palliers.pallier.forEach(pallier => {
+          if (pallier.unlocked) {
+            lastunlock = pallier;
+          }
+        });
+      }else{
+        this.product.palliers.pallier.forEach(pallier => {
+          if (pallier.unlocked && pallier.seuil>lastunlock.seuil && pallier.typeratio=='vitesse') {
+            lastunlock = pallier;
+            this.product.timeleft = this.product.timeleft / lastunlock.ratio;
+            this.progressbar.animate(1, { duration: this.product.timeleft });
+
+          }
+        });
+      }
       console.log(this.product.timeleft)
       if (this.product.timeleft > 0) {
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
@@ -136,7 +154,6 @@ export class ProductComponent implements OnInit {
         this.product.timeleft = 0;
         this.lastupdate = 0;
         this.run = false;
-        this.service.putProduct(this.product);
         this.notifyProduction.emit(this.product);
       }
 
@@ -169,6 +186,24 @@ export class ProductComponent implements OnInit {
       this.product.quantite += this._qtmulti;
       this.notifyMoney.emit(cost);
       this.service.putProduct(this.product);
+      this.product.palliers.pallier.forEach(pallier => {
+        if (!pallier.unlocked && this.product.quantite >= pallier.seuil) {
+          pallier.unlocked = true;
+          this.calcUpgrade(pallier);
+          this.notifyService.showSuccess("déblocage d'un bonus " + pallier.typeratio + " effectué pour " + this.product.name, "BONUS");
+        }
+      })
+    }
+  }
+
+  calcUpgrade(pallier: Pallier) {
+    switch (pallier.typeratio) {
+      case 'vitesse':
+        this.product.vitesse = this.product.vitesse / pallier.ratio;
+        break;
+      case 'gain':
+        this.product.revenu = this.product.revenu * pallier.ratio;
+        break;
     }
   }
 }

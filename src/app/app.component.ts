@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import { RestserviceService } from './restservice.service';
 import { World, Product, Pallier } from '../world';
 import { NotificationService } from './notification.service';
+import { ProductComponent } from './product/product.component';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { NotificationService } from './notification.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChildren(ProductComponent) productsComponent: QueryList<ProductComponent>;
   title = 'TPISISCapitalistClient';
   world: World = new World();
   server: string;
@@ -26,11 +28,11 @@ export class AppComponent {
     setTimeout(()=>{console.log(this.world.money);}, 100)
   }
 
-  ngOnInit(): void{
+  /* ngOnInit(): void{
     setInterval(()=>{
       this.service.saveWorld(this.world);
     },1000);
-  }
+  } */
 
   onUsernameChanged() {
     localStorage.setItem("username", this.username);
