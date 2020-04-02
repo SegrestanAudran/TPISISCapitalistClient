@@ -136,7 +136,7 @@ export class ProductComponent implements OnInit {
         this.product.timeleft = 0;
         this.lastupdate = 0;
         this.run = false;
-
+        this.service.putProduct(this.product);
         this.notifyProduction.emit(this.product);
       }
 
