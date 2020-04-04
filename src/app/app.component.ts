@@ -87,29 +87,13 @@ export class AppComponent {
    achatUpgrade(upgrade) {
     if (this.world.money >= upgrade.seuil) {
       this.world.money -= upgrade.seuil;
+      this.service.putUpgrade(upgrade);
       upgrade.unlocked = true;
       if (upgrade.idcible == 0) {
-        switch (upgrade.typeratio) {
-          case "VITESSE":
-            this.world.products.product.forEach(p => {
-              p.vitesse = p.vitesse / upgrade.ratio;
-            });
-            break;
-          case "GAIN":
-            this.world.products.product.forEach(p => {
-              p.revenu = p.revenu * upgrade.ratio;
-            });
-            break;
-        }
+        this.productsComponent.forEach(product => product.calcUpgrade(upgrade))
+        this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour tous les produits", "Upgrade global");
       } else {
-        switch (upgrade.typeratio) {
-          case "VITESSE":
-            this.world.products.product[upgrade.idcible - 1].vitesse = this.world.products.product[upgrade.idcible - 1].vitesse / upgrade.ratio;
-            break;
-          case "GAIN":
-            this.world.products.product[upgrade.idcible - 1].vitesse = this.world.products.product[upgrade.idcible - 1].revenu * upgrade.ratio;
-            break;
-        }
+        this.productsComponent[upgrade.idcible - 1].calcUpgrade(upgrade);
         this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour " + this.world.products.product[upgrade.idcible-1].name, "Upgrade"); 
       }
     }
@@ -150,6 +134,22 @@ export class AppComponent {
       }
     }
 
+    
+
   } 
+  bonusAllunlock() {
+    //on recherche la quantité minmal des produits
+    let min = Math.min(
+      ...this.productsComponent.map(p => p.product.quantite)
+    )
+    this.world.allunlocks.pallier.map(pallier => {
+      //si la quantité minimal dépasse le seuil, on débloque le produit concerné
+      if (!pallier.unlocked && min >= pallier.seuil) {
+        pallier.unlocked = true;
+        this.productsComponent.forEach(prod => prod.calcUpgrade(pallier))
+        this.notifyService.showSuccess("Bonus de " + pallier.typeratio + " effectué sur tous les produits", "bonus global");
+      }
+    })
+  }
 
 }

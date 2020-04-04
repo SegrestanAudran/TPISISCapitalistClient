@@ -4,6 +4,7 @@ import { RestserviceService } from '../restservice.service';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Product, World, Pallier } from 'src/world';
 import { NotificationService } from '../notification.service';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -22,7 +23,7 @@ export class ProductComponent implements OnInit {
   idBar: string;
   initRevenu: number = 0;
   progress: any;
-  run: boolean;
+  run: boolean = false;
   world: World;
 
   constructor(private service: RestserviceService, private notifyService: NotificationService) {
@@ -119,11 +120,13 @@ export class ProductComponent implements OnInit {
     if (this.product.quantite >= 1 && this.run == false) {
       //this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
       
-      this.service.putProduct(this.product);
-      this.progressbar.animate(1, {duration : this.product.vitesse});
-      this.product.timeleft = this.product.vitesse;
-      this.lastupdate = Date.now();
-      this.run = true;
+        this.service.putProduct(this.product);
+        this.progressbar.animate(1, {duration : this.product.vitesse});
+        this.product.timeleft = this.product.vitesse;
+        this.lastupdate = Date.now();
+        this.run = true;
+      
+      
     }
 
   }
@@ -182,7 +185,9 @@ export class ProductComponent implements OnInit {
     if (this._qtmulti <= this.calcMaxCanBuy()) {
       cost = this.product.cout * this._qtmulti;
       this.product.cout = this.product.cout * this.product.croissance ** this._qtmulti;
+      if(this.product.quantite != 0){
       this.product.revenu = (this.product.revenu / this.product.quantite) * (this.product.quantite + this._qtmulti);
+      }
       this.product.quantite += this._qtmulti;
       this.notifyMoney.emit(cost);
       this.service.putProduct(this.product);

@@ -33,7 +33,7 @@
     </div>
     <div class="row">
       <div class="col-md-2"></div>
-      <!-- <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div> -->
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div>
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="managersModal.show()">Managers</button></div>
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="ameliorationsModal.show()">Améliorations</button></div>
@@ -83,16 +83,32 @@
       <button type="button" class="btn btn-default" (click)="managersModal.hide()">Close</button>
     </div>
   </app-modal>
-  <!--<app-modal #unlocksModal>
+  <app-modal #unlocksModal>
     <div class="app-modal-header">
       <h4 class="modal-title">Unlocks</h4>
     </div>
     <div class="app-modal-body">
-      <div *ngFor="let unlock of world.allunlocks">
+        <div *ngFor="let product of world.products.product">
+          <div *ngFor="let unlock of product.palliers.pallier">
+            <div *ngIf="!unlock.unlocked">
+              <div class="row" style="overflow: auto">
+                <div class="col-md-4">
+                    <span><img class="logo" [attr.src]="'http://localhost:8080/'+product.logo"></span>
+                </div>
+                <div class="col-md-8">
+                    <span>{{unlock.name}}</span>
+                    <span></span>
+                    <span>{{unlock.seuil}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+      <div *ngFor="let unlock of world.allunlocks.pallier">
         <div *ngIf="!unlock.unlocked">
           <div class="row">
             <div class="col-md-4">
-                <!-- <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+world.products.product[manager.idcible-1].logo"></span>
+                <span><img class="logo" [attr.src]="'http://localhost:8080/'+unlock.logo"></span>
             </div>
             <div class="col-md-8">
                 <span>{{unlock.name}}</span>
@@ -106,7 +122,7 @@
     <div class="app-modal-footer">
       <button type="button" class="btn btn-default" (click)="unlocksModal.hide()">Close</button>
     </div>
-  </app-modal> -->
+  </app-modal>
 
 <app-modal #investisseursModal>
   <div class="app-modal-header">
