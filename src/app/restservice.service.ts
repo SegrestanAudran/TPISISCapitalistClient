@@ -96,4 +96,15 @@ export class RestserviceService {
        .catch(this.handleError);
    }
 
+   public putAngel(angel: Pallier): Promise<Response> {
+    // console.log(angel);
+     return this.http
+       .put(this.server + "generic/angelupgrade", angel, {
+         headers: { "X-user": this.getUser() }
+       })
+       .toPromise()
+       .then(response => response)
+       .catch(this.handleError);
+   }
+
 }

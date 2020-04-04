@@ -6,10 +6,10 @@
     </div>
     <div class="row">
       <div class="col-5 col-sm-6">
-        <button [disabled]="_qtmulti > calcMaxCanBuy()" type="button" class="btn btn-primary" (click)="achatProduit()">Cout : <span id="productCout" [innerHTML]="product.cout*_qtmulti | bigvalue"> {{product.cout}} </span></button>
+        <button [disabled]="_qtmulti > calcMaxCanBuy()" type="button" class="btn btn-primary" (click)="achatProduit()">Cout : <span id="productCout" [innerHTML]="cost | bigvalue"></span></button>
       </div>
       <div class="col-5 col-sm-6">
-        <span>Temps : <span id="productTemps" [innerHTML]="product.timeleft*_qtmulti | bigvalue"> {{product.timeleft}} </span></span>
+        <span>Temps : <span id="productTemps" [innerHTML]="product.timeleft | bigvalue"> {{product.timeleft}} </span></span>
       </div>
     </div>
   </div>

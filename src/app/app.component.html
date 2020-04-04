@@ -34,10 +34,10 @@
     <div class="row">
       <div class="col-md-2"></div>
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="managersModal.show()">Managers</button></div>
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="managersModal.show()"><span *ngIf="dManager" class="badge text-warning"> new </span> Manager</button></div>
       <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="ameliorationsModal.show()">Améliorations</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="angesModal.show()">Anges</button></div>
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="ameliorationsModal.show()"><span *ngIf="dUpgrade" class="badge text-warning"> new </span>Améliorations</button></div>
+      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="angesModal.show()"><span *ngIf="dAngel" class="badge text-warning"> new </span>Anges</button></div>
       
     </div>
     <div class="row">
@@ -46,9 +46,9 @@
       <div *ngIf="isEven">
     <div class="row">
       <div class="col-md-2"></div>
-      <app-product [prod]="world.products.product[p.id-1]" [mon]="world.money" [qtmulti]="qtmulti" class="product col" (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"></app-product>
+      <app-product [prod]="world.products.product[p.id-1]" [mon]="world.money" [qtmulti]="qtmulti" class="product col" (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)" (notifyBeforeProduction)="onEarlyProduction($event)"></app-product>
       <div class="col-md-1"></div>
-      <app-product [prod]="world.products.product[p.id]" [mon]="world.money" [qtmulti]="qtmulti" class="product col" (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"></app-product>
+      <app-product [prod]="world.products.product[p.id]" [mon]="world.money" [qtmulti]="qtmulti" class="product col" (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)" (notifyBeforeProduction)="onEarlyProduction($event)"></app-product>
       <div class="col-md-1"></div>
     </div>
   </div>
@@ -134,8 +134,11 @@
         <span>Total Anges:&nbsp;</span><span [innerHTML]="world.totalangels | bigvalue"></span><br/>
         <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>      
       </div>
-      <div class="col-md-3">
-        <button style="height: 100px; width: 100px;" class="btn btn-primary" >Claim and restart !</button>
+      <div class="col-md-4">
+        <span>Ange gagné au prochain restart : {{world.totalangels-world.activeangels}}</span>
+      </div>
+      <div class="col-md-4">
+        <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="claimAndRestart()">Claim and restart !</button>
       </div>
     </div>
   </div>

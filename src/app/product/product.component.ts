@@ -25,11 +25,10 @@ export class ProductComponent implements OnInit {
   progress: any;
   run: boolean = false;
   world: World;
+  cost : number;
 
-  constructor(private service: RestserviceService, private notifyService: NotificationService) {
-    service.getWorld().then(world => {
-      this.world = world;
-    });
+  constructor(private notifyService: NotificationService) {
+    
   }
 
   product: Product;
@@ -37,6 +36,7 @@ export class ProductComponent implements OnInit {
   set prod(value: Product) {
 
     this.product = value;
+    this.cost = this.product.cout;
     if (this.initRevenu == 0) {
       this.initRevenu = this.product.revenu;
     }
@@ -82,10 +82,12 @@ export class ProductComponent implements OnInit {
         break;
     }
     if (this._qtmulti == 1000 && this.product) this._qtmulti = this.calcMaxCanBuy();
+    this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
   }
-
+  @Output() notifyBeforeProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
-  @Output() notifyMoney: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public notifyMoney = new EventEmitter();
+
 
 
 
@@ -118,10 +120,13 @@ export class ProductComponent implements OnInit {
   production() {
     console.log("coucou ça marche ?")
     if (this.product.quantite >= 1 && this.run == false) {
-      //this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-      
-        this.service.putProduct(this.product);
+      if(this.product.vitesse >= 1000){
+        this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+        this.progressbar.animate(1, this.progress);
+      }else{
         this.progressbar.animate(1, {duration : this.product.vitesse});
+      }
+      this.notifyBeforeProduction.emit(this.product);
         this.product.timeleft = this.product.vitesse;
         this.lastupdate = Date.now();
         this.run = true;
@@ -180,17 +185,17 @@ export class ProductComponent implements OnInit {
   }
 
   achatProduit() {
-    let cost: number;
+    this.cost = this.product.cout;
 
     if (this._qtmulti <= this.calcMaxCanBuy()) {
-      cost = this.product.cout * this._qtmulti;
+      this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
+      console.log(this.cost)
       this.product.cout = this.product.cout * this.product.croissance ** this._qtmulti;
       if(this.product.quantite != 0){
-      this.product.revenu = (this.product.revenu / this.product.quantite) * (this.product.quantite + this._qtmulti);
+        this.product.revenu = (this.product.revenu / this.product.quantite) * (this.product.quantite + this._qtmulti);
       }
       this.product.quantite += this._qtmulti;
-      this.notifyMoney.emit(cost);
-      this.service.putProduct(this.product);
+      this.notifyMoney.emit({cout: this.cost, product: this.product });
       this.product.palliers.pallier.forEach(pallier => {
         if (!pallier.unlocked && this.product.quantite >= pallier.seuil) {
           pallier.unlocked = true;
