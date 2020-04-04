@@ -11,6 +11,8 @@ import { ModalComponent } from './modal/modal.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './notification.service';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatProgressBarModule
   ],
   providers: [RestserviceService, NotificationService],
   bootstrap: [AppComponent]

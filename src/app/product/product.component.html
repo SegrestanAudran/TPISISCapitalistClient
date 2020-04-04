@@ -2,7 +2,7 @@
     <span>Revenu : <span id="productRevenue" [innerHTML]="product.revenu | bigvalue"> {{product.revenu}} </span> </span>
     <span> Quantite : <span id="productQuantite" [innerHTML]="product.quantite | bigvalue"> {{product.quantite}} </span> </span>
     <div class="progress">
-      <div class="progress" #bar></div>
+      <mat-progress-bar class="progressbar" [value]="progressbarvalue"></mat-progress-bar>
     </div>
     <div class="row">
       <div class="col-5 col-sm-6">

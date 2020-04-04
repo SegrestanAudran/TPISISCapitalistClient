@@ -29,6 +29,11 @@ export class AppComponent {
     service.getWorld().then(world => {
       this.world = world;
     });
+    if(this.world.activeangels != 0){
+    this.world.products.product.forEach(produit => {
+      produit.revenu = produit.revenu * this.world.activeangels * this.world.angelbonus
+    });
+    }
     setTimeout(() => { console.log(this.world.money); }, 100)
   }
 

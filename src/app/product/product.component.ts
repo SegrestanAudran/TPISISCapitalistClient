@@ -26,6 +26,7 @@ export class ProductComponent implements OnInit {
   run: boolean = false;
   world: World;
   cost : number;
+  progressbarvalue: number;
 
   constructor(private notifyService: NotificationService) {
     
@@ -52,7 +53,7 @@ export class ProductComponent implements OnInit {
       if (this.product.managerUnlocked && this.product.timeleft > 0) {
         this.run = true;
         this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-        this.progressbar.animate(1, { duration: this.progress });
+        this.progressbarvalue = this.progress*100;
       }
     }, 100)
   }
@@ -92,12 +93,12 @@ export class ProductComponent implements OnInit {
 
 
   ngOnInit(): void {
-    setInterval(() => { this.calcScore(); }, 100);
+    setInterval(() => { this.calcScore(); }, 50);
   }
 
   ngAfterViewInit() {
 
-    setTimeout(() => {
+    /* setTimeout(() => {
       console.log("Coucou, ça marche l'initialisation ?");
       this.progressbar = new ProgressBar.Line(this.progressBarItem.nativeElement, {
         strokeWidth: 4,
@@ -112,7 +113,7 @@ export class ProductComponent implements OnInit {
           bar.path.setAttribute('stroke', state.color);
         }
       });
-    }, 100)
+    }, 100) */
   }
 
 
@@ -120,16 +121,13 @@ export class ProductComponent implements OnInit {
   production() {
     console.log("coucou ça marche ?")
     if (this.product.quantite >= 1 && this.run == false) {
-      if(this.product.vitesse >= 1000){
-        this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-        this.progressbar.animate(1, this.progress);
-      }else{
-        this.progressbar.animate(1, {duration : this.product.vitesse});
+      this.progressbarvalue = 0
+      if(!this.product.managerUnlocked){
+        this.notifyBeforeProduction.emit(this.product);
       }
-      this.notifyBeforeProduction.emit(this.product);
-        this.product.timeleft = this.product.vitesse;
-        this.lastupdate = Date.now();
-        this.run = true;
+      this.product.timeleft = this.product.vitesse;
+      this.lastupdate = Date.now();
+      this.run = true;
       
       
     }
@@ -149,16 +147,18 @@ export class ProductComponent implements OnInit {
           if (pallier.unlocked && pallier.seuil>lastunlock.seuil && pallier.typeratio=='vitesse') {
             lastunlock = pallier;
             this.product.timeleft = this.product.timeleft / lastunlock.ratio;
-            this.progressbar.animate(1, { duration: this.product.timeleft });
+            this.progressbarvalue = this.product.timeleft*100/this.product.vitesse;
 
           }
         });
       }
       console.log(this.product.timeleft)
       if (this.product.timeleft > 0) {
+        console.log(this.product.timeleft)
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
+        this.lastupdate = Date.now();
       } else {
-        this.progressbar.set(0);
+        this.progressbarvalue = 0;
         this.product.timeleft = 0;
         this.lastupdate = 0;
         this.run = false;
