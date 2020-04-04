@@ -66,15 +66,12 @@ export class AppComponent {
 
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
-    console.log(this.world.money)
     this.world.score = this.world.score + p.revenu;
-    console.log(this.world.score)
     this.world.totalangels = 150 * (this.world.score/10**15)**0.5;
   }
 
   onAchatDone(data) {
     this.world.money = this.world.money - data.cout;
-    console.log(data.cout)
     this.service.putProduct(data.product);
   }
 

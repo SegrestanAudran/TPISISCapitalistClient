@@ -4,6 +4,7 @@
 
 body {
     background-image: radial-gradient(White, Pink);
+    /* background-image: url("../assets/background.jpg") */
 }
 
 .round {

@@ -26,7 +26,7 @@ export class ProductComponent implements OnInit {
   run: boolean = false;
   world: World;
   cost : number;
-  progressbarvalue: number;
+  progressbarvalue: number = 0;
 
   constructor(private notifyService: NotificationService) {
     
@@ -41,7 +41,6 @@ export class ProductComponent implements OnInit {
     if (this.initRevenu == 0) {
       this.initRevenu = this.product.revenu;
     }
-    console.log(this.product.timeleft)
     if (this.product.timeleft < 0) {
       this.product.timeleft = 0;
     }
@@ -50,7 +49,7 @@ export class ProductComponent implements OnInit {
       this.run = false;
     }
     setTimeout(() => {
-      if (this.product.managerUnlocked && this.product.timeleft > 0) {
+      if (this.product && this.product.timeleft > 0) {
         this.run = true;
         this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
         this.progressbarvalue = this.progress*100;
@@ -93,7 +92,7 @@ export class ProductComponent implements OnInit {
 
 
   ngOnInit(): void {
-    setInterval(() => { this.calcScore(); }, 50);
+    setInterval(() => { this.calcScore(); }, 100);
   }
 
   ngAfterViewInit() {
@@ -119,7 +118,6 @@ export class ProductComponent implements OnInit {
 
 
   production() {
-    console.log("coucou ça marche ?")
     if (this.product.quantite >= 1 && this.run == false) {
       this.progressbarvalue = 0
       if(!this.product.managerUnlocked){
@@ -152,10 +150,9 @@ export class ProductComponent implements OnInit {
           }
         });
       }
-      console.log(this.product.timeleft)
       if (this.product.timeleft > 0) {
-        console.log(this.product.timeleft)
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
+        this.progressbarvalue = 100 - this.product.timeleft * 100/ this.product.vitesse;
         this.lastupdate = Date.now();
       } else {
         this.progressbarvalue = 0;
@@ -189,7 +186,6 @@ export class ProductComponent implements OnInit {
 
     if (this._qtmulti <= this.calcMaxCanBuy()) {
       this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
-      console.log(this.cost)
       this.product.cout = this.product.cout * this.product.croissance ** this._qtmulti;
       if(this.product.quantite != 0){
         this.product.revenu = (this.product.revenu / this.product.quantite) * (this.product.quantite + this._qtmulti);
