@@ -1,11 +1,33 @@
 /** {
     border: 1px solid black;
 }*/
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@100&display=swap');
+
 
 body {
-    background-image: radial-gradient(White, Pink);
+    /*background-image: radial-gradient(White, Pink);*/
     /* background-image: url("../assets/background.jpg") */
+    /* background-image:radial-gradient(White,Pink); */
+    background-image: url("../assets/back.png");
+    background-repeat: no-repeat;
+    height: 100%;
+
+  background-position: center;
+  background-size: cover;
+  
+
+  font-family: 'Roboto', sans-serif;
+
+  font-family: 'Pacifico', cursive;
 }
+
+.badge-light{
+    color:#212529;
+    background-color:#f8f9fa; 
+    text-shadow:none; 
+    font-size:20px;
+}
+
 
 .round {
     width: 100px;
@@ -25,9 +47,7 @@ body {
     bottom: -10px;
 }
 
-.title {
 
-}
 
 .logo {
 width : 100px;
@@ -43,4 +63,65 @@ border-radius: 50%;
 
 .template {
     display: none;
+}
+
+.animate
+{
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+}
+
+.action-button
+{
+    position: relative;
+    padding: 10px 40px;
+  margin: 0px 10px 10px 0px;
+  float: left;
+    border-radius: 10px;
+    font-family: 'Pacifico', cursive;
+    font-size: 20px;
+    color: #FFF;
+    text-decoration: none;  
+}
+
+.blue
+{
+    background-color: #3498DB;
+    border-bottom: 5px solid #2980B9;
+    text-shadow: 0px -2px #2980B9;
+}
+
+.red
+{
+    background-color: #E74C3C;
+    border-bottom: 5px solid #BD3E31;
+    text-shadow: 0px -2px #BD3E31;
+}
+
+.green
+{
+    background-color: #82BF56;
+    border-bottom: 5px solid #669644;
+    text-shadow: 0px -2px #669644;
+}
+
+.yellow
+{
+    background-color: #F2CF66;
+    border-bottom: 5px solid #D1B358;
+    text-shadow: 0px -2px #D1B358;
+}
+
+.pink
+{
+    background-color: #FC94AF;
+    border-bottom: 5px solid #FE7F9C;
+    text-shadow: 0px -2px #FE7F9C;
+}
+
+.action-button:active
+{
+    transform: translate(0px,5px);
+  -webkit-transform: translate(0px,5px);
+    border-bottom: 1px solid;
 }

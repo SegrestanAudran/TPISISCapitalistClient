@@ -11,3 +11,7 @@
     -webkit-border-radius: 100px 100px 100px 100px;
     border: 0px solid #000000;
 }
+
+.col-md-4{
+    font-size: 20px;
+}

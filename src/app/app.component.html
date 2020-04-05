@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" >
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstraptheme.min.css" >
 
   <style>
@@ -19,26 +20,29 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2"><img class="img-fluid logotitle" alt="Responsive image" [attr.src]="'http://localhost:8080/'+world.logo" /></div>
-      <div class="col-md-5 title h1"><span id="worldname"> {{world.name}} </span>
+      <div class="col-md-5 title h1"><span id="worldname"> {{world.name}} </span><br><br>
         <div class ='row'>
           <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue">{{world.money}}</span></div>
           <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"></span></div>
+          <div class="col-md-2">
+            <button class="btn btn-primary btn-lg" style="height: auto; width: auto ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
         </div>
       </div>
-      <div class="col-md-3"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
-      <div class="col-md-2">
-          <span class="row">Pseudo : </span>
-          <input type="text" [(ngModel)]="username" (change)="onUsernameChanged()" />
+      <div class="col-md-2"></div>
+      <div class="col-md-2" style="font-size:20px;">
+        <div class="form-group">
+        <label for="pseudo">Pseudo : </label>
+          <input type="text" [(ngModel)]="username" class="form-control" placeholder="Entrez votre pseudo" id="pseudo" (change)="onUsernameChanged()" />
+            </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="managersModal.show()"><span *ngIf="dManager" class="badge text-warning"> new </span> Manager</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="ameliorationsModal.show()"><span *ngIf="dUpgrade" class="badge text-warning"> new </span>Améliorations</button></div>
-      <div class="col-md-2"><button type="button" class="btn btn-outline-primary" data-toggle="modal" (click)="angesModal.show()"><span *ngIf="dAngel" class="badge text-warning"> new </span>Anges</button></div>
-      
+      <div class="col-md-2"><button type="button" class="action-button shadow animate blue" data-toggle="modal" (click)="unlocksModal.show()">Unlocks</button></div>
+      <div class="col-md-2"><button type="button" class="action-button shadow animate red" data-toggle="modal" (click)="managersModal.show()"><span *ngIf="dManager" class="badge badge-light "> new </span> Managers</button></div>
+      <div class="col-md-2"><button type="button" class="action-button shadow animate green" data-toggle="modal" (click)="investisseursModal.show()">Investisseurs</button></div>
+      <div class="col-md-2"><button type="button" class="action-button shadow animate yellow" data-toggle="modal" (click)="ameliorationsModal.show()"><span *ngIf="dUpgrade" class="badge badge-light text-warning"> new </span> Améliorations</button></div>
+      <div class="col-md-2"><button type="button" class="action-button shadow animate pink" data-toggle="modal" (click)="angesModal.show()"><span *ngIf="dAngel" class="badge badge-light text-warning"> new </span>Anges</button></div>
     </div>
     <div class="row">
     </div>
@@ -53,8 +57,7 @@
     </div>
   </div>
   </div>
-  
-  </div>
+</div>
   <app-modal #managersModal>
     <div class="app-modal-header">
       <h4 class="modal-title">Managers</h4>
@@ -96,9 +99,9 @@
                     <span><img class="logo" [attr.src]="'http://localhost:8080/'+product.logo"></span>
                 </div>
                 <div class="col-md-8">
-                    <span>{{unlock.name}}</span>
-                    <span></span>
-                    <span>{{unlock.seuil}}</span>
+                    <span>Nom:&nbsp;{{unlock.name}}</span>
+                    <br>
+                    <span>Seuil:&nbsp;{{unlock.seuil}}</span>
                 </div>
               </div>
             </div>
