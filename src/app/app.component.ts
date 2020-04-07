@@ -53,9 +53,11 @@ export class AppComponent {
 
   createUsername() {
     this.username = localStorage.getItem("username");
-    if (this.username == '') {
+    console.log(this.username)
+    if (this.username == null) {
       this.username = 'Hello' + Math.floor(Math.random() * 10000);
       localStorage.setItem("username", this.username);
+      console.log(this.username)
     }
     this.service.setUser(this.username);
   }
