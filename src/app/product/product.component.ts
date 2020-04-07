@@ -151,8 +151,10 @@ export class ProductComponent implements OnInit {
         });
       }
       if (this.product.timeleft > 0) {
+
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
-        this.progressbarvalue = 100 - this.product.timeleft * 100/ this.product.vitesse;
+        if(this.product.timeleft<0) this.product.timeleft=0
+        this.progressbarvalue = 100 - (this.product.timeleft * 100/ this.product.vitesse);
         this.lastupdate = Date.now();
       } else {
         this.progressbarvalue = 0;

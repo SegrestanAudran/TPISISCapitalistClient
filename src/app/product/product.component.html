@@ -1,8 +1,8 @@
 <div class="col-md-4"><img class="logo btn" [attr.src]="'http://localhost:8080/'+product.logo"  (click)="production()"/>
     <span>Revenu : <span id="productRevenue" [innerHTML]="product.revenu | bigvalue"> {{product.revenu}} </span> </span>
-    <span> Quantite : <span id="productQuantite" [innerHTML]="product.quantite | bigvalue"> {{product.quantite}} </span> </span>
+    <span> Quantité : <span id="productQuantite" [innerHTML]="product.quantite | bigvalue"> {{product.quantite}} </span> </span>
     <div>
-      <mat-progress-bar class="progressbar" [color]="color" [mode]="mode" [value]="progressbarvalue" ></mat-progress-bar>
+      <mat-progress-bar class="progressbar" mode="determinate" [value]="progressbarvalue" ></mat-progress-bar>
     </div>
     <div class="row">
       <div class="col-5 col-sm-6">
