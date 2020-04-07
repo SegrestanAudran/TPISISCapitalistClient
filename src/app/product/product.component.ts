@@ -199,6 +199,7 @@ export class ProductComponent implements OnInit {
           this.notifyService.showSuccess("déblocage d'un bonus " + pallier.typeratio + " effectué pour " + this.product.name, "BONUS");
         }
       })
+      this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
     }
   }
 

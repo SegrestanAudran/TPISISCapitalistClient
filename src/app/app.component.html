@@ -22,7 +22,6 @@
       <div class="col-md-5 title h1"><span id="worldname"> {{world.name}} </span>
         <div class ='row'>
           <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue">{{world.money}}</span></div>
-          <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"></span></div>
         </div>
       </div>
       <div class="col-md-3"><button class="btn btn-primary btn-lg" style="height: 100px; width: 100px ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
