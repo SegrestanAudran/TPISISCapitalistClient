@@ -24,7 +24,7 @@
         <div class ='row'>
           <div class ='col-md-5'>Argent : <span id="money" [innerHTML]="world.money | bigvalue">{{world.money}}</span></div>
 
-          <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.totalangels | bigvalue"></span></div>
+          <div class ='col-md-5'>Ange : <span id="angel" [innerHTML]="world.activeangels | bigvalue"></span></div>
           <div class="col-md-2">
             <button class="btn btn-primary btn-lg" style="height: auto; width: auto ;" (click)="commutateur()"><span>buy: </span><span>{{qtmulti}}</span></button></div>
         </div>
@@ -139,7 +139,7 @@
         <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>      
       </div>
       <div class="col-md-4">
-        <span>Ange gagné au prochain restart : {{world.totalangels-world.activeangels}}</span>
+        <span>Ange gagné au prochain restart : {{angegagnes-world.totalangels}}</span>
       </div>
       <div class="col-md-4">
         <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="claimAndRestart()">Claim and restart !</button>

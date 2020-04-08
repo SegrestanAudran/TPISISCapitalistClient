@@ -21,6 +21,7 @@ export class AppComponent {
   dUpgrade: boolean;
   dAngel: any;
   dInvest: boolean;
+  angegagnes : number;
 
   constructor(private service: RestserviceService, private notifyService: NotificationService) {
     this.server = service.getServer();
@@ -29,12 +30,17 @@ export class AppComponent {
     service.getWorld().then(world => {
       this.world = world;
     });
-    if(this.world.activeangels != 0){
-    this.world.products.product.forEach(produit => {
-      produit.revenu = produit.revenu * this.world.activeangels * this.world.angelbonus
-    });
-    }
-    setTimeout(() => { console.log(this.world.money); }, 100)
+    
+    setTimeout(() => { console.log(this.world.money); console.log(this.world.score);
+      if(this.world.activeangels != 0){
+        console.log("coucou");
+        console.log(this.world.products);
+      this.world.products.product.forEach(produit => {
+        console.log("coucou");
+        produit.revenu = produit.revenu * (1 + (this.world.activeangels * this.world.angelbonus/100));
+      });
+      }
+    }, 100)
   }
 
   ngOnInit(): void{
@@ -43,6 +49,7 @@ export class AppComponent {
       this.disponibiliteAngels()
       this.disponibiliteUpgrades()
       this.bonusAllunlock()
+      console.log(this.world.score)
     },100);
   }
 
@@ -69,7 +76,8 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
-    this.world.totalangels = 150 * (this.world.score/10**15)**0.5;
+    console.log(p.revenu);
+    this.angegagnes = 150 * (this.world.score/10**15)**0.5;
   }
 
   onAchatDone(data) {
@@ -207,7 +215,7 @@ export class AppComponent {
   timeToClaim() {
     this.dInvest = false;
     if(this.world.activeangels != 0){
-      if(this.world.activeangels*2 >= this.world.totalangels){
+      if(this.world.totalangels*2 <= this.angegagnes){
         this.dInvest = true;
       }
     }
