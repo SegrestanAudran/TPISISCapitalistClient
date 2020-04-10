@@ -187,6 +187,8 @@ export class ProductComponent implements OnInit {
     switch (pallier.typeratio) {
       case 'vitesse':
         this.product.vitesse = this.product.vitesse / pallier.ratio;
+        this.product.timeleft = this.product.timeleft / pallier.ratio;
+        this.progressbarvalue = this.progressbarvalue * pallier.ratio;
         break;
       case 'gain':
         this.product.revenu = this.product.revenu * pallier.ratio;

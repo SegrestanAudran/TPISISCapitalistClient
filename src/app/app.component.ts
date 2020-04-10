@@ -45,7 +45,6 @@ export class AppComponent {
       this.disponibiliteManager()
       this.disponibiliteAngels()
       this.disponibiliteUpgrades()
-      this.timeToClaim()
       this.bonusAllunlock()
     },100);
   }
@@ -76,7 +75,7 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
-    this.angegagnes = Math.round(150 * (this.world.score/10**7)**0.5);
+    this.angegagnes = Math.round(150 * (this.world.score/10**9)**0.5);
   }
 
   //Alerte le monde d'un achat de produit
@@ -127,7 +126,11 @@ export class AppComponent {
         this.productsComponent.forEach(product => product.calcUpgrade(upgrade))
         this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour tous les produits", "Upgrade global");
       } else {
-        this.productsComponent[upgrade.idcible - 1].calcUpgrade(upgrade);
+        this.productsComponent.forEach(product => {
+          if(product.product.id == upgrade.idcible){
+            product.calcUpgrade(upgrade)
+          }})
+        //this.productsComponent[upgrade.idcible-1].calcUpgrade(upgrade);
         this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour " + this.world.products.product[upgrade.idcible - 1].name, "Upgrade");
       }
     }
@@ -218,14 +221,5 @@ export class AppComponent {
         }
       }
     })
-  }
-
-  timeToClaim() {
-    this.dInvest = false;
-    if(this.world.activeangels != 0){
-      if(this.world.totalangels*2 <= this.angegagnes){
-        this.dInvest = true;
-      }
-    }
   }
 }
