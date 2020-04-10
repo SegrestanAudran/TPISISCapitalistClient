@@ -11,16 +11,12 @@ import { NotificationService } from '../notification.service';
 
 
 export class ProductComponent implements OnInit {
-  @ViewChild('bar') progressBarItem: ElementRef;
   progressbar: any;
   lastupdate: number;
-  progressDone: boolean;
   vitesse: number;
-  idBar: string;
   initRevenu: number = 0;
   progress: any;
   run: boolean = false;
-  world: World;
   cost : number;
   progressbarvalue: number = 0;
 
@@ -33,7 +29,7 @@ export class ProductComponent implements OnInit {
   set prod(value: Product) {
 
     this.product = value;
-    //On garde en mémoire le cout initiale du produit
+    //On garde en mémoire le cout du produit pour l'afficher
     this.cost = this.product.cout;
 
     //On garde en mémoire le revenu initale du produit
@@ -86,6 +82,7 @@ export class ProductComponent implements OnInit {
         break;
     }
     if (this._qtmulti == 1000 && this.product) this._qtmulti = this.calcMaxCanBuy();
+    //On met à jour csot à chaque changement de qtmulti
     this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
   }
 
@@ -115,6 +112,7 @@ export class ProductComponent implements OnInit {
   //Fonction de calcul des revenus
   calcScore() {
     if (this.run) {
+      //Permet de vérifier 
       let lastunlock: any;
       if (lastunlock == null) {
         this.product.palliers.pallier.forEach(pallier => {
@@ -131,6 +129,7 @@ export class ProductComponent implements OnInit {
           }
         });
       }
+      //Mise à jour de la progression
       if (this.product.timeleft > 0) {
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
         if(this.product.timeleft<0) this.product.timeleft=0

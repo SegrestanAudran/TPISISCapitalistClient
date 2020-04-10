@@ -74,10 +74,10 @@
                 <span>{{manager.name}}</span>
             </div>
             <div class="col-md-3">
-                <span>{{manager.seuil}}</span>
+                <span>Prix : {{manager.seuil}}</span>
             </div>
             <div class="col-md-3">
-                <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatManager(manager)" [disabled]="world.money < manager.seuil">Hire!</button>
+                <button style="height: auto; width: 100px;" class="btn btn-primary" (click)="achatManager(manager)" [disabled]="world.money < manager.seuil">Hire!</button>
             </div>
           </div>
         </div>
@@ -115,9 +115,9 @@
                 <span><img class="logo" [attr.src]="'http://localhost:8080/'+unlock.logo"></span>
             </div>
             <div class="col-md-8">
-                <span>{{unlock.name}}</span>
-                <span></span>
-                <span>{{unlock.seuil}}</span>
+                <span>Nom:&nbsp;{{unlock.name}}</span>
+                <br>
+                <span>Seuil:&nbsp;{{unlock.seuil}}</span>
             </div>
           </div>
         </div>
@@ -135,15 +135,16 @@
   <div class="app-modal-body">
     <div class="row">
       <div class="col-md-4">
-        <span>Total Anges:&nbsp;</span><span [innerHTML]="world.totalangels | bigvalue"></span><br/>
+        <span>Total Anges:&nbsp;</span><span [innerHTML]="world.totalangels | bigvalue"></span>
+        <br>
         <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>      
       </div>
       <div class="col-md-4">
         <span *ngIf="angegagnes-world.totalangels <= 0">Ange gagné au prochain restart : 0</span>
-        <span *ngIf="angegagnes-world.totalangels > 0">Ange gagné au prochain restart : {{angegagnes-world.totalangels}}</span>
+        <span *ngIf="angegagnes-world.totalangels > 0">Ange gagné au prochain restart : <span [innerHTML]="angegagnes-world.totalangels | bigvalue"></span></span>
       </div>
       <div class="col-md-4">
-        <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="claimAndRestart()">Claim and restart !</button>
+        <button style="height: auto; width: auto;" class="btn btn-primary" (click)="claimAndRestart()">Claim and restart !</button>
       </div>
     </div>
   </div>
@@ -162,15 +163,17 @@
           <div class="col-md-2">
               <span><img class="logo btn" [attr.src]="'http://localhost:8080/'+upgrade.logo"></span>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-5">
             <span>{{upgrade.name}} </span>
             <span>{{upgrade.typeratio}} </span>
-            <span *ngIf="upgarde.idcible == 0"> Pour tous </span>
-            <span *ngIf="upgarde.idcible != 0"> Pour : {{world.products.product[upgrade.idcible-1]}} </span>
-            <span>{{upgrade.seuil}}</span>
+            <br>
+            <span *ngIf="upgrade.idcible == 0"> Pour tous </span>
+            <span *ngIf="upgrade.idcible != 0"> Pour : {{world.products.product[upgrade.idcible-1].name}} </span>
+            <br>
+            <span>Prix : {{upgrade.seuil}}</span>
           </div>
           <div class="col-md-3">
-              <button style="height: 100px; width: 100px;" class="btn btn-primary" 
+              <button style="height: auto; width: 100px;" class="btn btn-primary" 
               (click)="achatUpgrade(upgrade)" [disabled]="world.money < upgrade.seuil"> Buy !
               </button>
           </div>
@@ -195,11 +198,11 @@
           </div>
           <div class="col-md-5">
             <span>{{angel.name}}</span>
-            <span>{{angel.typeratio}}</span>
-            <span>{{angel.seuil}}</span>
+            <br>
+            <span>Prix : {{angel.seuil}}</span>
           </div>
           <div class="col-md-3">
-              <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatAnge(angel)" [disabled]="world.activeangels < angel.seuil">Buy !</button>
+              <button style="height: auto; width: 100px;" class="btn btn-primary" (click)="achatAnge(angel)" [disabled]="world.activeangels < angel.seuil">Buy !</button>
           </div>
         </div>
       </div>

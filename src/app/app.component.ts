@@ -59,7 +59,6 @@ export class AppComponent {
   //Si le nom d'utilisateur est vide, on génère un nom aléatoire le temps que l'utilisateur le change 
   createUsername() {
     this.username = localStorage.getItem("username");
-    console.log(this.username)
     if (this.username == null || this.username == '' ) {
       this.username = 'Barba' + Math.floor(Math.random() * 10000);
       localStorage.setItem("username", this.username);
@@ -77,7 +76,7 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
-    this.angegagnes = Math.round(150 * (this.world.score/10**15)**0.5);
+    this.angegagnes = Math.round(150 * (this.world.score/10**7)**0.5);
   }
 
   //Alerte le monde d'un achat de produit
@@ -110,10 +109,10 @@ export class AppComponent {
   achatManager(manager) {
     if (this.world.money >= manager.seuil) {
       this.world.money -= manager.seuil;
-      manager.unlocked = true;
-      this.world.products.product[manager.idcible - 1].managerUnlocked = true;
+      manager.unlocked = true; 
+      this.world.products.product[manager.idcible - 1].managerUnlocked = true;//On averti le produit concerné que son manager est débloqué
       this.notifyService.showSuccess("Achat de " + manager.name + " effectué", "Manager")
-      this.service.putManager(manager);
+      this.service.putManager(manager);//On averti le serveur
     }
   }
 
@@ -121,10 +120,10 @@ export class AppComponent {
   achatUpgrade(upgrade) {
     if (this.world.money >= upgrade.seuil) {
       this.world.money -= upgrade.seuil;
-
-      this.service.putUpgrade(upgrade);
+      this.service.putUpgrade(upgrade);//On averti le serveur
       upgrade.unlocked = true;
       if (upgrade.idcible == 0) {
+        //Si 0 l'amélioration est pour tous les produits
         this.productsComponent.forEach(product => product.calcUpgrade(upgrade))
         this.notifyService.showSuccess("achat d'un upgrade de " + upgrade.typeratio + " pour tous les produits", "Upgrade global");
       } else {
@@ -142,6 +141,7 @@ export class AppComponent {
       if (angel.typeratio == "ange") {
         this.world.angelbonus += angel.ratio;
       } else {
+        //On test si l'amélioration d'ange touche les produits
         if (angel.idcible == 0) {
           this.productsComponent.forEach(product => product.calcUpgrade(angel))
           this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour tous les produits", "Upgrade Angels");
@@ -151,13 +151,13 @@ export class AppComponent {
         }
       }
       this.updateProductRevenu(angel.seuil);
-      this.service.putAngel(angel);
+      this.service.putAngel(angel);//On averti le serveur
     }
   }
 
   //Gère les bonus dans all unlocks
   bonusAllunlock() {
-    //on recherche la quantité minmal des produits
+    //On recherche la quantité minmal des produits
     let min = Math.min(
       ...this.productsComponent.map(p => p.product.quantite)
     )
