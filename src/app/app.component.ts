@@ -30,6 +30,11 @@ export class AppComponent {
       this.world = world;
     });
     //Initialise le revenu avec le bonus des anges si ils sont actif
+    
+  }
+
+  ngOnInit(): void{
+    //Met en place les vérifications des managers, anges, upgrades
     setTimeout(() => {
       if(this.world.activeangels != 0){
       this.world.products.product.forEach(produit => {
@@ -37,12 +42,9 @@ export class AppComponent {
         console.log(produit.revenu)
       });
       }
-    this.angegagnes = Math.round(150 * (this.world.score/(10**9))**0.5);
+      this.angegagnes = Math.round(150 * (this.world.score/(10**9))**0.5);
+      console.log(this.angegagnes)
     }, 100)
-  }
-
-  ngOnInit(): void{
-    //Met en place les vérifications des managers, anges, upgrades
     setInterval(()=>{
       this.disponibiliteManager()
       this.disponibiliteAngels()
