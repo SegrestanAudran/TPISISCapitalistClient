@@ -34,8 +34,10 @@ export class AppComponent {
       if(this.world.activeangels != 0){
       this.world.products.product.forEach(produit => {
         produit.revenu = produit.revenu * (1 + (this.world.activeangels * this.world.angelbonus/100));
+        console.log(produit.revenu)
       });
       }
+    this.angegagnes = Math.round(150 * (this.world.score/(10**9))**0.5);
     }, 100)
   }
 
@@ -75,7 +77,8 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
-    this.angegagnes = Math.round(150 * (this.world.score/10**9)**0.5);
+    this.angegagnes = Math.round(150 * (this.world.score/(10**9))**0.5);
+    console.log(this.angegagnes)
   }
 
   //Alerte le monde d'un achat de produit

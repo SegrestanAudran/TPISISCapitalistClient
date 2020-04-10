@@ -140,8 +140,7 @@
         <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>      
       </div>
       <div class="col-md-4">
-        <span *ngIf="angegagnes-world.totalangels <= 0">Ange gagné au prochain restart : 0</span>
-        <span *ngIf="angegagnes-world.totalangels > 0">Ange gagné au prochain restart : <span [innerHTML]="angegagnes-world.totalangels | bigvalue"></span></span>
+        <span>Ange gagné au prochain restart : <span [innerHTML]="angegagnes-world.totalangels | bigvalue"></span></span>
       </div>
       <div class="col-md-4">
         <button style="height: auto; width: auto;" class="btn btn-primary" (click)="claimAndRestart()">Claim and restart !</button>
