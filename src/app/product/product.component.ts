@@ -1,10 +1,6 @@
-declare var require;
-const ProgressBar = require("progressbar.js");
-import { RestserviceService } from '../restservice.service';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Product, World, Pallier } from 'src/world';
 import { NotificationService } from '../notification.service';
-import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-product',

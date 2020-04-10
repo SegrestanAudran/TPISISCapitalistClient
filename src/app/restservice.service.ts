@@ -37,6 +37,8 @@ export class RestserviceService {
     return Promise.reject(error.message || error);
   }
 
+
+  //Fonction de récupération du monde
   getWorld(): Promise<World> {
     return this.http.get(this.server + "generic/world", {
       headers: this.setHeaders(this.getUser())
@@ -45,12 +47,15 @@ export class RestserviceService {
       .catch(this.handleError);
   };
 
+
+  //Fonction de set du Header
   private setHeaders(user: string): HttpHeaders {
     var headers = new HttpHeaders({ 'X-User': user});
 
     return headers;
   }
 
+  //Fonction de sauvegarde d'un manager
   public putManager(manager: Pallier): Promise<Response> {
     return this.http.put(this.server + "generic/manager", manager, {
       headers: { "X-user": this.getUser() }
@@ -59,6 +64,7 @@ export class RestserviceService {
       .catch(this.handleError);
   }
 
+  //Fonction de sauvegarde d'un produit
   public putProduct(product: Product): Promise<Response> {
     return this.http.put(this.server + "generic/product", product, {
       headers: { "X-user": this.getUser() }
@@ -67,6 +73,7 @@ export class RestserviceService {
       .catch(this.handleError);
   };
 
+  //Fonction de sauvegarde d'une amélioration
   public putUpgrade(upgrade: Pallier): Promise<Response> {
      return this.http
        .put(this.server + "generic/upgrade", upgrade, {
@@ -76,17 +83,8 @@ export class RestserviceService {
        .then(response => response)
        .catch(this.handleError);
    }
- 
-   public saveWorld(world: World): Promise<Response> {
-      return this.http
-        .put(this.server + "generic/world", world, {
-          headers: { "X-user": this.getUser() }
-        })
-        .toPromise()
-        .then(response => response)
-        .catch(this.handleError);
-    }
- 
+   
+   //Fonction
    public deleteWorld(): Promise<Response> {
      return this.http
        .delete(this.server + "generic/world", {
@@ -97,9 +95,8 @@ export class RestserviceService {
    }
 
    public putAngel(angel: Pallier): Promise<Response> {
-    // console.log(angel);
      return this.http
-       .put(this.server + "generic/angelupgrade", angel, {
+       .put(this.server + "generic/angelUpgrade", angel, {
          headers: { "X-user": this.getUser() }
        })
        .toPromise()

@@ -26,17 +26,13 @@ export class AppComponent {
   constructor(private service: RestserviceService, private notifyService: NotificationService) {
     this.server = service.getServer();
     this.createUsername();
-
     service.getWorld().then(world => {
       this.world = world;
     });
-    
-    setTimeout(() => { console.log(this.world.money); console.log(this.world.score);
+    //Initialise le revenu avec le bonus des anges si ils sont actif
+    setTimeout(() => {
       if(this.world.activeangels != 0){
-        console.log("coucou");
-        console.log(this.world.products);
       this.world.products.product.forEach(produit => {
-        console.log("coucou");
         produit.revenu = produit.revenu * (1 + (this.world.activeangels * this.world.angelbonus/100));
       });
       }
@@ -44,24 +40,27 @@ export class AppComponent {
   }
 
   ngOnInit(): void{
+    //Met en place les vérifications des managers, anges, upgrades
     setInterval(()=>{
       this.disponibiliteManager()
       this.disponibiliteAngels()
       this.disponibiliteUpgrades()
+      this.timeToClaim()
       this.bonusAllunlock()
-      console.log(this.world.score)
     },100);
   }
 
+  //Change le nom d'utilisateur du monde
   onUsernameChanged() {
     localStorage.setItem("username", this.username);
     this.service.setUser(this.username);
   }
 
+  //Si le nom d'utilisateur est vide, on génère un nom aléatoire le temps que l'utilisateur le change 
   createUsername() {
     this.username = localStorage.getItem("username");
     console.log(this.username)
-    if (this.username == null) {
+    if (this.username == null || this.username == '' ) {
       this.username = 'Hello' + Math.floor(Math.random() * 10000);
       localStorage.setItem("username", this.username);
       console.log(this.username)
@@ -69,22 +68,25 @@ export class AppComponent {
     this.service.setUser(this.username);
   }
 
+  //Permet d'envoyer au serveur le début du processus de production
   onEarlyProduction(p: Product){
     this.service.putProduct(p);
   }
 
+  //On récupère les évènement de production des produits pour modifier l'argent et le score du monde
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
-    console.log(p.revenu);
-    this.angegagnes = 150 * (this.world.score/10**15)**0.5;
+    this.angegagnes = Math.round(150 * (this.world.score/10**15)**0.5);
   }
 
+  //Alerte le monde d'un achat de produit
   onAchatDone(data) {
     this.world.money = this.world.money - data.cout;
     this.service.putProduct(data.product);
   }
 
+  //Donne les différentes valeur a qmulti pour les achats multiple
   commutateur() {
     switch (this.qtmulti) {
       case "1":
@@ -103,6 +105,8 @@ export class AppComponent {
         this.qtmulti = "1";
     }
   }
+
+  //Fonction d'achat de manager
   achatManager(manager) {
     if (this.world.money >= manager.seuil) {
       this.world.money -= manager.seuil;
@@ -112,6 +116,8 @@ export class AppComponent {
       this.service.putManager(manager);
     }
   }
+
+  //Fonction d'achat d'amélioration
   achatUpgrade(upgrade) {
     if (this.world.money >= upgrade.seuil) {
       this.world.money -= upgrade.seuil;
@@ -128,6 +134,7 @@ export class AppComponent {
     }
   }
 
+  //Fonction d'achat d'amélioration d'ange
   achatAnge(angel) {
     if (this.world.activeangels >= angel.seuil) {
       this.world.activeangels -= angel.seuil;
@@ -143,14 +150,12 @@ export class AppComponent {
           this.notifyService.showSuccess("achat d'un upgrade de " + angel.typeratio + " pour " + this.world.products.product[angel.idcible - 1].name, "Upgrade Angels")
         }
       }
-      
       this.updateProductRevenu(angel.seuil);
       this.service.putAngel(angel);
     }
-
-
-
   }
+
+  //Gère les bonus dans all unlocks
   bonusAllunlock() {
     //on recherche la quantité minmal des produits
     let min = Math.min(
@@ -166,11 +171,13 @@ export class AppComponent {
     })
   }
 
+  //Fonction pour gérer le restart du monde
   claimAndRestart(): void {
     this.service.deleteWorld();
     window.location.reload();
   }
 
+  //Fonction de mise à jour des revenus lors d'un achat sur les anges
   updateProductRevenu(seuil){
     if(this.world.activeangels != 0){ 
     this.world.products.product.forEach(product => {
@@ -179,6 +186,7 @@ export class AppComponent {
   }
   }
 
+  //Fonctions de vérification de disponibilité
   disponibiliteManager(): void {
     this.dManager = false;
     this.world.managers.pallier.forEach(val => {

@@ -196,7 +196,7 @@
             <span>{{angel.seuil}}</span>
           </div>
           <div class="col-md-3">
-              <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatAnge(angel)" [disabled]="world.money < angel.seuil">Buy !</button>
+              <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatAnge(angel)" [disabled]="world.activeangels < angel.seuil">Buy !</button>
           </div>
         </div>
       </div>
