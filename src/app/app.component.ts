@@ -21,7 +21,7 @@ export class AppComponent {
   dUpgrade: boolean;
   dAngel: any;
   dInvest: boolean;
-  angegagnes : number;
+  angegagnes : number = 0;
 
   constructor(private service: RestserviceService, private notifyService: NotificationService) {
     this.server = service.getServer();
@@ -61,7 +61,7 @@ export class AppComponent {
     this.username = localStorage.getItem("username");
     console.log(this.username)
     if (this.username == null || this.username == '' ) {
-      this.username = 'Hello' + Math.floor(Math.random() * 10000);
+      this.username = 'Barba' + Math.floor(Math.random() * 10000);
       localStorage.setItem("username", this.username);
       console.log(this.username)
     }

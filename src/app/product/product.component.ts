@@ -33,10 +33,15 @@ export class ProductComponent implements OnInit {
   set prod(value: Product) {
 
     this.product = value;
+    //On garde en mémoire le cout initiale du produit
     this.cost = this.product.cout;
+
+    //On garde en mémoire le revenu initale du produit
     if (this.initRevenu == 0) {
       this.initRevenu = this.product.revenu;
     }
+
+    //On s'assure que le timeleft sauvegarder dans le serveur ne soit pas érroner
     if (this.product.timeleft < 0) {
       this.product.timeleft = 0;
     }
@@ -44,6 +49,8 @@ export class ProductComponent implements OnInit {
       this.product.timeleft = 0;
       this.run = false;
     }
+
+    //On initialise la progressbar en fonction des données du serveur
     setTimeout(() => {
       if (this.product && this.product.timeleft > 0) {
         this.run = true;
@@ -53,13 +60,14 @@ export class ProductComponent implements OnInit {
     }, 100)
   }
 
-
+  //On récupère l'argent du monde
   money: number;
   @Input()
   set mon(value: number) {
     this.money = value;
   }
 
+  //On récupère le modificateur d'achat multiple
   _qtmulti: number;
   @Input()
   set qtmulti(value: string) {
@@ -80,39 +88,18 @@ export class ProductComponent implements OnInit {
     if (this._qtmulti == 1000 && this.product) this._qtmulti = this.calcMaxCanBuy();
     this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
   }
+
+  //On nitifie le monde des évènements
   @Output() notifyBeforeProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyMoney = new EventEmitter();
 
-
-
-
+  //On initialise le calcule des revenus
   ngOnInit(): void {
     setInterval(() => { this.calcScore(); }, 100);
   }
 
-  ngAfterViewInit() {
-
-    /* setTimeout(() => {
-      console.log("Coucou, ça marche l'initialisation ?");
-      this.progressbar = new ProgressBar.Line(this.progressBarItem.nativeElement, {
-        strokeWidth: 4,
-        easing: 'easeInOut',
-        color: '#FFEA82',
-        trailColor: '#eee',
-        trailWidth: 1,
-        svgStyle: { width: '100%', height: '100%' },
-        from: { color: '#FFEA82' },
-        to: { color: '#faacd3' },
-        step: (state, bar) => {
-          bar.path.setAttribute('stroke', state.color);
-        }
-      });
-    }, 100) */
-  }
-
-
-
+  //Fonction de lancement de production
   production() {
     if (this.product.quantite >= 1 && this.run == false) {
       this.progressbarvalue = 0
@@ -122,11 +109,10 @@ export class ProductComponent implements OnInit {
       this.product.timeleft = this.product.vitesse;
       this.lastupdate = Date.now();
       this.run = true;
-      
-      
     }
-
   }
+
+  //Fonction de calcul des revenus
   calcScore() {
     if (this.run) {
       let lastunlock: any;
@@ -142,12 +128,10 @@ export class ProductComponent implements OnInit {
             lastunlock = pallier;
             this.product.timeleft = this.product.timeleft / lastunlock.ratio;
             this.progressbarvalue = this.product.timeleft*100/this.product.vitesse;
-
           }
         });
       }
       if (this.product.timeleft > 0) {
-
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
         if(this.product.timeleft<0) this.product.timeleft=0
         this.progressbarvalue = 100 - (this.product.timeleft * 100/ this.product.vitesse);
@@ -159,7 +143,6 @@ export class ProductComponent implements OnInit {
         this.run = false;
         this.notifyProduction.emit(this.product);
       }
-
     }
     if (this.product.managerUnlocked) {
       this.production();
@@ -167,8 +150,7 @@ export class ProductComponent implements OnInit {
 
   }
 
-
-
+  //Fonction de calcul du maximum d'achat possible
   calcMaxCanBuy(): number {
     let cost: number = this.product.cout;
     let maxCanBuy: number = 0;
@@ -179,9 +161,9 @@ export class ProductComponent implements OnInit {
     return maxCanBuy;
   }
 
+  //Fonction d'achat d'un produit
   achatProduit() {
     this.cost = this.product.cout;
-
     if (this._qtmulti <= this.calcMaxCanBuy()) {
       this.cost = this.product.cout * ((1 - this.product.croissance ** this._qtmulti)/(1-this.product.croissance));
       this.product.cout = this.product.cout * this.product.croissance ** this._qtmulti;
@@ -201,6 +183,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  //Fonction de prise en compte des amélirations des produits
   calcUpgrade(pallier: Pallier) {
     switch (pallier.typeratio) {
       case 'vitesse':

@@ -84,7 +84,7 @@ export class RestserviceService {
        .catch(this.handleError);
    }
    
-   //Fonction
+   //Fonction de suppresion du monde
    public deleteWorld(): Promise<Response> {
      return this.http
        .delete(this.server + "generic/world", {
@@ -94,6 +94,7 @@ export class RestserviceService {
        .catch(this.handleError);
    }
 
+   //Fonction de sauvegarde d'achat d'amélioration d'ange
    public putAngel(angel: Pallier): Promise<Response> {
      return this.http
        .put(this.server + "generic/angelUpgrade", angel, {
